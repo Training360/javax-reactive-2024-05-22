@@ -92,5 +92,12 @@ public class ReactiveMain {
                 )
                 .subscribe(System.out::println);
 
+        System.out.println("***");
+        Flux.just("a", "aa", "b", "bb", "c", "cc")
+                .filter(s -> s.length() == 1)
+                .map(s -> s.toUpperCase())
+                .doOnNext(System.out::println)
+                ;
+//                .subscribe(System.out::println);
     }
 }
