@@ -1,6 +1,9 @@
 ### List employees
 GET http://localhost:8080/api/employees
 
+### Find employee by id
+GET http://localhost:8080/api/employees/5
+
 ### Create employees
 POST http://localhost:8080/api/employees
 Content-Type: application/json
@@ -9,13 +12,30 @@ Content-Type: application/json
   "name": "John Doe"
 }
 
+### Create employees with empty name
+POST http://localhost:8080/api/employees
+Content-Type: application/json
+
+{
+  "name": ""
+}
+
 ### Update
-PUT http://localhost:8080/api/employees/1
+PUT http://localhost:8080/api/employees/100
 Content-Type: application/json
 
 {
   "id": 1,
   "name": "Jack Doe"
+}
+
+### Update with empty name
+PUT http://localhost:8080/api/employees/100
+Content-Type: application/json
+
+{
+  "id": 1,
+  "name": ""
 }
 
 ### Delete

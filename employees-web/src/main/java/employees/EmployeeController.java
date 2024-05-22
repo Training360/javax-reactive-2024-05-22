@@ -1,5 +1,6 @@
 package employees;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
@@ -23,7 +24,7 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public Mono<EmployeeDto> create(@RequestBody EmployeeDto employeeDto) {
+    public Mono<EmployeeDto> create(@Valid @RequestBody EmployeeDto employeeDto) {
         if (employeeDto.id() != null) {
             throw new IllegalArgumentException("Do not send id!");
         }
@@ -31,7 +32,7 @@ public class EmployeeController {
     }
 
     @PutMapping("/{id}")
-    public Mono<EmployeeDto> update(@PathVariable long id, @RequestBody EmployeeDto employeeDto) {
+    public Mono<EmployeeDto> update(@PathVariable long id, @Valid @RequestBody EmployeeDto employeeDto) {
         if (id != employeeDto.id()) {
             throw new IllegalArgumentException("Ids are not the same");
         }
