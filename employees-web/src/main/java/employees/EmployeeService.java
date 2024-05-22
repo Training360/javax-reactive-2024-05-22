@@ -34,6 +34,9 @@ public class EmployeeService {
                 .map(EmployeeService::toDto);
     }
 
+    public Mono<Void> deleteById(long id) {
+        return employeeRepository.deleteById(id);
+    }
 
     private static Employee toEntity(EmployeeDto employeeDto) {
         return new Employee(employeeDto.id(), employeeDto.name());

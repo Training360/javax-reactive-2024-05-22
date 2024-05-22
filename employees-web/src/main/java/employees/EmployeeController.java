@@ -37,4 +37,9 @@ public class EmployeeController {
         }
         return employeeService.save(employeeDto);
     }
+
+    @DeleteMapping("/{id}")
+    public Mono<Void> deleteById(@PathVariable long id) {
+        return employeeService.deleteById(id);
+    }
 }

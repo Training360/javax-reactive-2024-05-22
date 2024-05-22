@@ -40,4 +40,9 @@ public class EmployeeRepository {
                     .doOnNext(e -> e.setName(employee.getName())); // Ilyet ne csináljunk
         }
     }
+
+    public Mono<Void> deleteById(long id) {
+        employees.removeIf(employee -> employee.getId() == id);
+        return Mono.empty();
+    }
 }
