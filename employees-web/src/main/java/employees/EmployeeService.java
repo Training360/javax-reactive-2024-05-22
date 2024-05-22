@@ -23,12 +23,17 @@ public class EmployeeService {
                 .map(EmployeeService::toDto);
     }
 
-    public Mono<EmployeeDto> create(EmployeeDto employeeDto) {
+    public Mono<EmployeeDto> save(EmployeeDto employeeDto) {
+//        var entity = toEntity(employeeDto);
+//        return employeeRepository.save(entity)
+//                .map(EmployeeService::toDto);
+
         return Mono.just(employeeDto)
                 .map(EmployeeService::toEntity)
                 .flatMap(employeeRepository::save)
                 .map(EmployeeService::toDto);
     }
+
 
     private static Employee toEntity(EmployeeDto employeeDto) {
         return new Employee(employeeDto.id(), employeeDto.name());

@@ -35,6 +35,9 @@ public class EmployeeRepository {
             employees.add(employee);
             return Mono.just(employee);
         }
-        throw new IllegalArgumentException("Can not update");
+        else {
+            return findById(employee.getId())
+                    .doOnNext(e -> e.setName(employee.getName())); // Ilyet ne csináljunk
+        }
     }
 }

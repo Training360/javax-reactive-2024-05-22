@@ -24,6 +24,17 @@ public class EmployeeController {
 
     @PostMapping
     public Mono<EmployeeDto> create(@RequestBody EmployeeDto employeeDto) {
-        return employeeService.create(employeeDto);
+        if (employeeDto.id() != null) {
+            throw new IllegalArgumentException("Do not send id!");
+        }
+        return employeeService.save(employeeDto);
+    }
+
+    @PutMapping("/{id}")
+    public Mono<EmployeeDto> update(@PathVariable long id, @RequestBody EmployeeDto employeeDto) {
+        if (id != employeeDto.id()) {
+            throw new IllegalArgumentException("Ids are not the same");
+        }
+        return employeeService.save(employeeDto);
     }
 }

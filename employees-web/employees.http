@@ -8,3 +8,12 @@ Content-Type: application/json
 {
   "name": "John Doe"
 }
+
+### Update
+PUT http://localhost:8080/api/employees/1
+Content-Type: application/json
+
+{
+  "id": 1,
+  "name": "Jack Doe"
+}
