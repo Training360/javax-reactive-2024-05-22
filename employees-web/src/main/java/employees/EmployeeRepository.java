@@ -7,14 +7,17 @@ import reactor.core.publisher.Mono;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
 public class EmployeeRepository {
+    private final AtomicLong idSequence = new AtomicLong();
 
     private final List<Employee> employees = Collections.synchronizedList(new ArrayList<>(List.of(
-            new Employee(1L, "John Doe"),
-            new Employee(2L, "Jane Doe")
+            new Employee(idSequence.incrementAndGet(), "John Doe"),
+            new Employee(idSequence.incrementAndGet(), "Jane Doe")
     )));
+
 
     public Flux<Employee> findAll() {
         return Flux.fromIterable(employees);
@@ -24,5 +27,14 @@ public class EmployeeRepository {
         return Flux.fromIterable(employees)
                 .filter(employee -> employee.getId() == id)
                 .singleOrEmpty();
+    }
+
+    public Mono<Employee> save(Employee employee) {
+        if (employee.getId() == null) {
+            employee.setId(idSequence.incrementAndGet());
+            employees.add(employee);
+            return Mono.just(employee);
+        }
+        throw new IllegalArgumentException("Can not update");
     }
 }
