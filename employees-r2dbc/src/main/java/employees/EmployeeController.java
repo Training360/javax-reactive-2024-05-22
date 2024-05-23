@@ -2,6 +2,7 @@ package employees;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.dao.TransientDataAccessResourceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -46,7 +47,7 @@ public class EmployeeController {
         }
         return employeeService.save(employeeDto)
                 .map(ResponseEntity::ok)
-                .defaultIfEmpty(ResponseEntity.notFound().build());
+                .onErrorReturn(TransientDataAccessResourceException.class, ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")

@@ -32,6 +32,7 @@ public class EmployeeService {
 
         return Mono.just(employeeDto)
                 .map(EmployeeService::toEntity)
+                // Ez nem létező id esetén  TransientDataAccessResourceException kivételt dob
                 .flatMap(employeeRepository::save)
                 .map(EmployeeService::toDto)
                 .doOnNext(dto -> log.debug("Created dto: {}", dto));
