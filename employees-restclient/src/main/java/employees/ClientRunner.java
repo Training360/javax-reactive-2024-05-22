@@ -12,19 +12,22 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Slf4j
 public class ClientRunner implements CommandLineRunner  {
 
-    private WebClient webClient;
+//    private WebClient webClient;
+
+    private EmployeeClient employeeClient;
 
     @Override
     public void run(String... args) throws Exception {
         log.info("hello");
 
-        var json = webClient.get().uri("/api/employees").exchangeToMono(response -> response.bodyToMono(String.class)).block();
-        log.info(json);
+//        var json = webClient.get().uri("/api/employees").exchangeToMono(response -> response.bodyToMono(String.class)).block();
+//        log.info(json);
+//
+//        var employees = webClient.get().uri("/api/employees").exchangeToFlux(clientResponse -> clientResponse.bodyToFlux(Employee.class)).collectList().block();
+//        employees.forEach(employee -> log.info("employee: {}", employee));
 
-        var employees = webClient.get().uri("/api/employees").exchangeToFlux(clientResponse -> clientResponse.bodyToFlux(Employee.class)).collectList().block();
+        var employees = employeeClient.findAll().collectList().block();
         employees.forEach(employee -> log.info("employee: {}", employee));
     }
-
-    public record Employee(Long id, String name) {}
 
 }
