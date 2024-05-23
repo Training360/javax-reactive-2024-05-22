@@ -3,6 +3,7 @@ package employees;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -27,6 +28,7 @@ public class EmployeeService {
         return employeeRepository.findEmployeeDtoById(id);
     }
 
+    @Transactional
     public Mono<EmployeeDto> save(EmployeeDto employeeDto) {
 //        var entity = toEntity(employeeDto);
 //        return employeeRepository.save(entity)
@@ -38,6 +40,7 @@ public class EmployeeService {
                 .flatMap(employeeRepository::save)
                 .map(EmployeeService::toDto)
                 .doOnNext(dto -> log.debug("Created dto: {}", dto));
+//                .handle((dto, sink) -> sink.error(new IllegalStateException("Rollback")));
     }
 
     public Mono<Void> deleteById(long id) {
