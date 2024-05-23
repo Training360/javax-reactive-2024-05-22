@@ -2,6 +2,7 @@ package employees;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
@@ -13,6 +14,8 @@ import reactor.core.publisher.Mono;
 public class EmployeeService {
 
     private EmployeeRepository employeeRepository;
+
+    private StreamBridge streamBridge;
 
     public Flux<EmployeeDto> findAll() {
 //        return employeeRepository
@@ -39,7 +42,9 @@ public class EmployeeService {
                 // Ez nem létező id esetén  TransientDataAccessResourceException kivételt dob
                 .flatMap(employeeRepository::save)
                 .map(EmployeeService::toDto)
-                .doOnNext(dto -> log.debug("Created dto: {}", dto));
+                .doOnNext(dto -> log.debug("Created dto: {}", dto))
+                .doOnNext(dto -> streamBridge.send("employeesTopic",dto))
+                ;
 //                .handle((dto, sink) -> sink.error(new IllegalStateException("Rollback")));
     }
 
