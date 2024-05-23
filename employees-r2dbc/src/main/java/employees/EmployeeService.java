@@ -14,15 +14,17 @@ public class EmployeeService {
     private EmployeeRepository employeeRepository;
 
     public Flux<EmployeeDto> findAll() {
-        return employeeRepository
-                .findAll()
-                .map(EmployeeService::toDto);
+//        return employeeRepository
+//                .findAll()
+//                .map(EmployeeService::toDto);
+        return employeeRepository.findAllEmployeeDto();
     }
 
     public Mono<EmployeeDto> findById(long id) {
-        return employeeRepository
-                .findById(id)
-                .map(EmployeeService::toDto);
+//        return employeeRepository
+//                .findById(id)
+//                .map(EmployeeService::toDto);
+        return employeeRepository.findEmployeeDtoById(id);
     }
 
     public Mono<EmployeeDto> save(EmployeeDto employeeDto) {
