@@ -21,7 +21,7 @@ public class EmployeeService {
         return employeeRepository.findAllEmployeeDto();
     }
 
-    public Mono<EmployeeDto> findById(long id) {
+    public Mono<EmployeeDto> findById(String id) {
 //        return employeeRepository
 //                .findById(id)
 //                .map(EmployeeService::toDto);
@@ -43,7 +43,7 @@ public class EmployeeService {
 //                .handle((dto, sink) -> sink.error(new IllegalStateException("Rollback")));
     }
 
-    public Mono<Void> deleteById(long id) {
+    public Mono<Void> deleteById(String id) {
         return employeeRepository.deleteById(id);
     }
 

@@ -1,8 +1,10 @@
 package employees;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-public record Employee(@Id Long id, String name) {
+@Document(collection = "employees")
+public record Employee(@Id String id, String name) {
 
 
 }

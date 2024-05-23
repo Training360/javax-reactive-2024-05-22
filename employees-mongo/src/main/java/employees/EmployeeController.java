@@ -24,7 +24,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}")
-    public Mono<ResponseEntity<EmployeeDto>> findById(@PathVariable long id) {
+    public Mono<ResponseEntity<EmployeeDto>> findById(@PathVariable String id) {
         return employeeService.findById(id)
                 .map(ResponseEntity::ok)
                 .defaultIfEmpty(ResponseEntity.notFound().build());
@@ -37,12 +37,12 @@ public class EmployeeController {
         }
         return employeeService
                 .save(employeeDto)
-                .map(result -> ResponseEntity.created(URI.create("/api/employees/%d".formatted(result.id()))).body(result));
+                .map(result -> ResponseEntity.created(URI.create("/api/employees/%s".formatted(result.id()))).body(result));
     }
 
     @PutMapping("/{id}")
-    public Mono<ResponseEntity<EmployeeDto>> update(@PathVariable long id, @Valid @RequestBody EmployeeDto employeeDto) {
-        if (id != employeeDto.id()) {
+    public Mono<ResponseEntity<EmployeeDto>> update(@PathVariable String id, @Valid @RequestBody EmployeeDto employeeDto) {
+        if (!id.equals(employeeDto.id())) {
             throw new IllegalArgumentException("Ids are not the same");
         }
         return employeeService.save(employeeDto)
@@ -52,7 +52,7 @@ public class EmployeeController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public Mono<Void> deleteById(@PathVariable long id) {
+    public Mono<Void> deleteById(@PathVariable String id) {
         return employeeService.deleteById(id);
     }
 }

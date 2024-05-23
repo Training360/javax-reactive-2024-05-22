@@ -1,1 +1,0 @@
-create table if not exists employee (id bigint generated always as identity, name varchar(255));
