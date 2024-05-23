@@ -2,6 +2,7 @@ package employees;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.ReactiveRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
@@ -14,6 +15,8 @@ public class EmployeeService {
 
     private EmployeeRepository employeeRepository;
 
+    private ReactiveRedisTemplate<Long, EmployeeDto> reactiveRedisTemplate;
+
     public Flux<EmployeeDto> findAll() {
 //        return employeeRepository
 //                .findAll()
@@ -25,7 +28,16 @@ public class EmployeeService {
 //        return employeeRepository
 //                .findById(id)
 //                .map(EmployeeService::toDto);
-        return employeeRepository.findEmployeeDtoById(id);
+
+//        return employeeRepository.findEmployeeDtoById(id);
+
+        return reactiveRedisTemplate.opsForValue().get(id)
+                .switchIfEmpty(
+                        employeeRepository
+                                .findEmployeeDtoById(id)
+                                .flatMap(dto -> reactiveRedisTemplate.opsForValue().set(id, dto).thenReturn(dto))
+                )
+                ;
     }
 
     @Transactional

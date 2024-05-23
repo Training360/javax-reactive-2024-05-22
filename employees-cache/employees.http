@@ -5,7 +5,7 @@ GET http://localhost:8080/api/hello
 GET http://localhost:8080/api/employees
 
 ### Find employee by id
-GET http://localhost:8080/api/employees/1
+GET http://localhost:8080/api/employees/2
 
 ### Find employee by id - not found
 GET http://localhost:8080/api/employees/888
